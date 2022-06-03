@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet"
+          href="/plugins/bootstrap/css/bootstrap.min.css" th:href="@{/plugins/bootstrap/css/bootstrap.min.css}" type="text/css">
+    <link rel="stylesheet"
+          href="/plugins/adminLTE/css/AdminLTE.css" th:href="@{/plugins/adminLTE/css/AdminLTE.css}" type="text/css">
+</head>
+<body>
+<div class="row">
+    <div class="col-xs-4"></div>
+    <div class="col-xs-4">
+        <form action="/area/add">
+            <div class="form-group">
+            <input type="text" name="areaid" hidden>
+            </div>
+            <div class="form-group">
+            <label>地区名：</label>
+            <input type="text" class="form-control"  name="areaname">
+            </div>
+            <div class="form-group">
+            <label>风险等级：</label>
+            <select class="form-control"  name="arealevel">
+                <option value="1">低风险</option>
+                <option value="2">中风险</option>
+                <option value="3">高风险</option>
+            </select>
+            </div>
+            <div class="form-group">
+            <label>时间：</label>
+            <input type="date" class="form-control"  name="time">
+            </div>
+            <input type="submit" value="增加">
+        </form>
+    </div>
+    <div class="col-xs-4"></div>
+</div>
+
+</body>
+</html>

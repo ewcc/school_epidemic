@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet"
+          href="/plugins/bootstrap/css/bootstrap.min.css" th:href="@{/plugins/bootstrap/css/bootstrap.min.css}" type="text/css">
+    <link rel="stylesheet"
+          href="/plugins/adminLTE/css/AdminLTE.css" th:href="@{/plugins/adminLTE/css/AdminLTE.css}" type="text/css">
+</head>
+<body>
+<div class="row">
+    <div class="col-xs-4"></div>
+    <div class="col-xs-4">
+        <form action="/area/update">
+            <div class="form-group">
+            <input hidden name="areaid" th:value="${area.getAreaid()}">
+            </div>
+            <div class="form-group">
+            <label>风险地区名：</label>
+            <input type="text" class="form-control" name="areaname" th:value="${area.getAreaname()}">
+            </div>
+            <div class="form-group">
+            <label>风险等级：</label>
+            <select name="arealevel" class="form-control">
+                <option th:selected="${area.getArealevel()} eq 1" value="1">低风险</option>
+                <option th:selected="${area.getArealevel()} eq 2" value="2">中风险</option>
+                <option th:selected="${area.getArealevel()} eq 3" value="3">高风险</option>
+            </select>
+            </div>
+            <div class="form-group">
+            <label>时间：</label>
+            <input type="date" class="form-control" name="time" th:value="${area.getTime()}">
+            </div>
+            <input type="submit" value="更新">
+    </form>
+    </div>
+    <div class="col-xs-4"></div>
+</div>
+</body>
+</html>

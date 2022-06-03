@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>trip_add</title>
+    <link rel="stylesheet"
+          href="/plugins/bootstrap/css/bootstrap.min.css" th:href="@{/plugins/bootstrap/css/bootstrap.min.css}" type="text/css">
+    <link rel="stylesheet"
+          href="/plugins/adminLTE/css/AdminLTE.css" th:href="@{/plugins/adminLTE/css/AdminLTE.css}" type="text/css">
+</head>
+<body>
+<div class="row">
+    <div class="col-xs-4"></div>
+    <div class="col-xs-4">
+    <form enctype="multipart/form-data" method="post" action="/trip/add">
+        <div class="form-group">
+        <input name="tripid" value="222" hidden>
+        </div>
+        <div class="form-group">
+        <label>学号:</label>
+        <input name="username" class="form-control" th:value="${student.username}">
+        </div>
+        <div class="form-group">
+        <label>学生姓名:</label>
+        <input name="name" class="form-control" th:value="${student.name}">
+        </div>
+        <div class="form-group">
+        <label>时间:</label>
+        <input name="time" class="form-control" type="date">
+        </div>
+        <div class="form-group">
+        <label>行程码:</label>
+        <input name="tripcode"  value="2222" hidden="hidden">
+        <input type="file" class="form-control" accept="image/png, image/jpeg" name="file"  multiple>
+        </div>
+        <div class="form-group">
+        <label>健康码:</label>
+        <input name="healthcode"  value="2222" hidden="hidden">
+        <input type="file" class="form-control" accept="image/png, image/jpeg" name="file" multiple>
+        </div>
+        <input name="addtime" id="addtime" hidden>
+        <input type="submit" value="提交">
+    </form>
+    </div>
+    <div class="col-xs-4"></div>
+</div>
+
+<script>
+
+</script>
+</body>
+</html>

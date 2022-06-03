@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ew.school_epidemic.mapper.StudentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.ew.school_epidemic.entity.Student">
+        <id column="studentid" property="studentid" />
+        <result column="username" property="username" />
+        <result column="name" property="name" />
+        <result column="gender" property="gender" />
+        <result column="tel" property="tel" />
+        <result column="email" property="email" />
+        <result column="brithday" property="brithday" />
+        <result column="healthstate" property="healthstate" />
+        <result column="college" property="college" />
+    </resultMap>
+
+</mapper>

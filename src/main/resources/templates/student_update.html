@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet"
+          href="/plugins/bootstrap/css/bootstrap.min.css" th:href="@{/plugins/bootstrap/css/bootstrap.min.css}" type="text/css">
+    <link rel="stylesheet"
+          href="/plugins/adminLTE/css/AdminLTE.css" th:href="@{/plugins/adminLTE/css/AdminLTE.css}" type="text/css">
+</head>
+<body>
+<div class="row">
+    <div class="col-xs-4"></div>
+    <div class="col-xs-4">
+        <form action="/student/update">
+            <div class="form-group">
+            <input name="studentid" hidden="hidden" th:value="${student.getStudentid()}" >
+            </div>
+            <div class="form-group">
+            <label>用户名:</label>
+            <input name="username" readonly="readonly" class="form-control" th:value="${student.getUsername()}" >
+            </div>
+            <div class="form-group">
+            <label>姓名:</label>
+            <input name="name" class="form-control" th:value="${student.getName()}">
+            </div>
+            <div class="form-group">
+            <label>性别:</label>
+            <input name="gender" class="form-control" th:value="${student.getGender()}">
+            </div>
+            <div class="form-group">
+            <label>电话:</label>
+            <input name="tel" class="form-control" th:value="${student.getTel()}">
+            </div>
+            <div class="form-group">
+            <label>邮箱:</label>
+            <input name="email" class="form-control" th:value="${student.getEmail()}">
+            </div>
+            <div class="form-group">
+            <label>生日:</label>
+            <input name="brithday" class="form-control" type="date" th:value="${student.getBrithday()}">
+            </div>
+            <div class="form-group">
+            <label>健康状态:</label>
+            <input name="healthstate" class="form-control" th:value="${student.getHealthstate()}">
+            </div>
+            <div class="form-group">
+            <label>学院:</label>
+            <input name="college" class="form-control" th:value="${student.getCollege()}">
+            </div>
+            <input type="submit" value="更新">
+    </form>
+    </div>
+    <div class="col-xs-4"></div>
+</div>
+</body>
+</html>

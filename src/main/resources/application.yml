@@ -1,0 +1,44 @@
+server:
+  tomcat:
+    uri-encoding: UTF-8
+  port: 8080
+spring:
+  redis:
+    #Redis 连接IP
+    host: localhost
+    #Redis 连接端口号
+    port: 6379
+    #Redis数据库索引（默认为0）  0-15
+    database: 0
+    #连接超时时间 毫米数
+    timeout: 1800000
+    lettuce:
+      pool:
+        #连接池最大连接数（负数表示没有限制）
+        max-active: 20
+        #连接池最大阻塞等待时间（负数表示无限制）
+        max-wait: -1
+        #连接池中最大空闲连接
+        max-idle: 5
+        #连接池中最小空闲连接
+        min-idle: 0
+    #Redis服务器连接密码（默认为空）
+    password:
+  thymeleaf:
+    encoding: UTF-8
+    cache: false
+    check-template-location: true
+    enabled: true
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/school_epidemic?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 3MB
+      max-request-size: 3MB
+mybatis-plus:
+  mapper-locations: classpath:com/ew/school_epidemic/mapper/xml/*.xml

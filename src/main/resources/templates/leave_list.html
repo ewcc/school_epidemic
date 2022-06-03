@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>leave_list</title>
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css" th:href="@{/assets/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css" th:href="@{/assets/font-awesome/4.5.0/css/font-awesome.min.css}"/>
+
+    <!-- page specific plugin styles -->
+
+    <!-- text fonts -->
+    <link rel="stylesheet" href="/assets/css/fonts.googleapis.com.css" th:href="@{/assets/css/fonts.googleapis.com.css}"/>
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="/assets/css/ace.min.css" th:href="@{/assets/css/ace.min.css}" class="ace-main-stylesheet" id="main-ace-style"/>
+
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="/assets/css/ace-part2.min.css" th:href="@{/assets/css/ace-part2.min.css}" class="ace-main-stylesheet"/>
+    <![endif]-->
+    <link rel="stylesheet" href="/assets/css/ace-skins.min.css" th:href="@{/assets/css/ace-skins.min.css}"/>
+    <link rel="stylesheet" href="/assets/css/ace-rtl.min.css" th:href="@{/assets/css/ace-rtl.min.css}"/>
+
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="/assets/css/ace-ie.min.css" th:href="@{/assets/css/ace-ie.min.css}"/>
+    <![endif]-->
+
+    <!-- inline styles related to this page -->
+
+    <!-- ace settings handler -->
+    <script src="/assets/js/ace-extra.min.js" th:src="@{/assets/js/ace-extra.min.js}"></script>
+
+    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+
+    <!--[if lte IE 8]>
+    <script src="/assets/js/html5shiv.min.js" th:src="@{/assets/js/html5shiv.min.js}" ></script>
+    <script src="/assets/js/respond.min.js" th:src="@{/assets/js/respond.min.js}"></script>
+    <![endif]-->
+    <style>
+        /*#max {*/
+        /*    width: 57px;*/
+        /*}*/
+    </style>
+</head>
+<body class="skin-1">
+<div id="navbar" class="navbar navbar-default          ace-save-state">
+    <div class="navbar-container ace-save-state" id="navbar-container">
+        <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+            <span class="sr-only">Toggle sidebar</span>
+
+            <span class="icon-bar"></span>
+
+            <span class="icon-bar"></span>
+
+            <span class="icon-bar"></span>
+        </button>
+
+        <div class="navbar-header pull-left">
+            <a href="#" class="navbar-brand">
+                <small>
+                    <i class="fa fa-leaf"></i>
+                    校园 疫情管理系统
+                </small>
+            </a>
+        </div>
+
+        <div class="navbar-buttons navbar-header pull-right" role="navigation">
+            <ul class="nav ace-nav">
+                <li class="light-blue dropdown-modal">
+                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                        <img class="nav-user-photo" src="/assets/images/avatars/user.jpg" alt="Jason's Photo"/>
+                        <span class="user-info">
+									<small>Welcome,</small>
+                                    <small th:text="${session.name}"></small>
+								</span>
+                        <i class="ace-icon fa fa-caret-down"></i>
+                    </a>
+                    <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                        <li th:if="${session.permission}=='user'">
+                            <a href="/toPersonal">
+                                <i class="ace-icon fa fa-cog"></i>
+                                个人资料
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/toUpdatePassword">
+                                <i class="ace-icon fa fa-user"></i>
+                                修改密码
+                            </a>
+                        </li>
+
+                        <li class="divider"></li>
+
+                        <li>
+                            <a href="/loginOut">
+                                <i class="ace-icon fa fa-power-off"></i>
+                                Logout
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div><!-- /.navbar-container -->
+</div>
+<div class="main-container ace-save-state" id="main-container">
+    <script type="text/javascript">
+        try {
+            ace.settings.loadState('main-container')
+        } catch (e) {
+        }
+    </script>
+    <!--侧边栏-->
+    <div id="sidebar" class="sidebar                  responsive                    ace-save-state">
+        <script type="text/javascript">
+            try {
+                ace.settings.loadState('sidebar')
+            } catch (e) {
+            }
+        </script>
+        <ul class="nav nav-list">
+            <li class="">
+                <a href="/main.html">
+                    <i class="menu-icon fa fa-tachometer"></i>
+                    <span class="menu-text"> 首页 </span>
+                </a>
+
+                <b class="arrow"></b>
+            </li>
+
+            <li th:if="${session.permission}=='super'" class="">
+                <a href="#" class="dropdown-toggle">
+                    <i class="menu-icon fa fa-desktop"></i>
+                    <span class="menu-text">
+								系统用户
+							</span>
+
+                    <b class="arrow fa fa-angle-down"></b>
+                </a>
+
+                <b class="arrow"></b>
+
+                <ul class="submenu">
+                    <li class="">
+                        <a href="/role/list">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            管理员
+                        </a>
+                        <b class="arrow"></b>
+                    </li>
+                </ul>
+            </li>
+
+            <li th:if="${session.permission}!='user'" class="">
+                <a href="#" class="dropdown-toggle">
+                    <i class="menu-icon fa fa-list"></i>
+                    <span class="menu-text"> 学生管理 </span>
+
+                    <b class="arrow fa fa-angle-down"></b>
+                </a>
+
+                <b class="arrow"></b>
+
+                <ul class="submenu">
+                    <li class="">
+                        <a href="/student/list">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            学生信息
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="">
+                <a href="#" class="dropdown-toggle">
+                    <i class="menu-icon fa fa-pencil-square-o"></i>
+                    <span class="menu-text"> 风险地区 </span>
+
+                    <b class="arrow fa fa-angle-down"></b>
+                </a>
+
+                <b class="arrow"></b>
+
+                <ul class="submenu">
+                    <li class="">
+                        <a href="/area/list">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            地区信息
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="">
+                <a href="#" class="dropdown-toggle">
+                    <i class="menu-icon fa fa-pencil-square-o"></i>
+                    <span class="menu-text"> 行程管理 </span>
+
+                    <b class="arrow fa fa-angle-down"></b>
+                </a>
+
+                <b class="arrow"></b>
+
+                <ul class="submenu">
+                    <li class="">
+                        <a href="/trip/list">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            行程信息
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="">
+                <a href="#" class="dropdown-toggle">
+                    <i class="menu-icon fa fa-pencil-square-o"></i>
+                    <span class="menu-text"> 健康管理 </span>
+
+                    <b class="arrow fa fa-angle-down"></b>
+                </a>
+
+                <b class="arrow"></b>
+
+                <ul class="submenu">
+                    <li class="">
+                        <a href="/health/list">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            健康信息
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="active open">
+                <a href="#" class="dropdown-toggle">
+                    <i class="menu-icon fa fa-pencil-square-o"></i>
+                    <span class="menu-text"> 请假管理 </span>
+
+                    <b class="arrow fa fa-angle-down"></b>
+                </a>
+
+                <b class="arrow"></b>
+
+                <ul class="submenu">
+                    <li class="active">
+                        <a href="/leave/list">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            请假信息
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+                </ul>
+            </li>
+        </ul><!-- /.nav-list -->
+        <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+            <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state"
+               data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+        </div>
+    </div>
+    <div class="main-content" style="background-color: rgb(239,239,239)">
+        <div class="main-content-inner">
+            <!--顶部路径栏-->
+            <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="ace-icon fa fa-home home-icon"></i>
+                        <a href="#">Home</a>
+                    </li>
+                    <li class="active">请假信息</li>
+                </ul><!-- /.breadcrumb -->
+            </div>
+            <div class="row" style="margin-left: 0px">
+                <div class="col-xs-12" style="background-color: white">
+                    <div class="row">
+                        <div class="col-sm-7">
+                            <div class="row">
+                                <div class="space-12"></div>
+                                <div class="col-xs-10" th:if="${session.permission}!='user'">
+                                    <form class="form-inline">
+                                        <input type="text" name="username" class="username form-control" placeholder="请输入用户名"
+                                               aria-describedby="basic-addon2">
+                                        <input type="text" name="name" class="name form-control" placeholder="请输入姓名"
+                                               aria-describedby="basic-addon2">
+                                            <button type="button" class="search btn btn-default no-border btn-sm"
+                                                    id="basic-addon2">
+                                                <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                                            </button>
+                                    </form>
+                                </div>
+                                <button id="adds" th:if="${session.permission}=='user'">添加</button>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <table id="simple-table" class="table  table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th class="center">
+                                        <!--                                        <label class="pos-rel">-->
+                                        <!--                                            <input type="checkbox" class="ace"/>-->
+                                        <!--                                            <span class="lbl"></span>-->
+                                        <!--                                        </label>-->
+                                        <input type="checkbox" id="main-type-id" />
+                                    </th>
+                                    <th class="id hidden">id</th>
+                                    <th class="username">用户名</th>
+                                    <th class="name">姓名</th>
+                                    <th class="reason">原因</th>
+                                    <th class="startime">开始时间</th>
+                                    <th class="endtime">结束时间</th>
+                                    <th class="state">状态</th>
+                                    <th class="change">操作</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr th:each="leave:${list.records}">
+                                    <td class="center">
+                                        <input type="checkbox" class="type-id" />
+                                    </td>
+                                    <td th:text="${leave.leaveid}" class="hidden">
+                                    </td>
+                                    <td th:text="${leave.username}">
+                                    </td>
+                                    <td th:text="${leave.name}">
+                                    </td>
+                                    <td th:text="${leave.reason}">
+                                    </td>
+                                    <td th:text="${leave.starttime}">
+                                    </td>
+                                    <td th:text="${leave.endtime}">
+                                    </td>
+                                    <td th:text="${leave.state}==0?'待审核':(${leave.state}==1?'已通过':'未通过')">
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm delete" th:if="${session.permission}!='user'" th:attr="data-role-id=${leave.leaveid}">
+									<span class="glyphicon glyphicon-trash " aria-hidden="true"
+                                          th:attr="data-type-id=${leave.leaveid}"></span> 删除
+                                        </button> &nbsp;&nbsp;
+                                        <button class="btn btn-info btn-sm update"  th:if="${session.permission}!='user'" th:attr="data-role-id=${leave.leaveid}">
+									<span class="glyphicon glyphicon-pencil " aria-hidden="true"
+                                          th:attr="data-type-id=${leave.leaveid}"></span> 修改
+                                        </button>&nbsp;&nbsp;
+                                        <button class="btn btn-danger btn-sm add" th:if="${session.permission}=='user'" th:attr="data-role-id=${leave.leaveid}">
+									<span class="glyphicon glyphicon-trash " aria-hidden="true"
+                                          th:attr="data-type-id=${leave.leaveid}"></span> 增加
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 col-sm-offset-1">
+                            <div class="input-group input-group-sm" style="margin-top: 18px">
+                                <span class="input-group-addon">共计：<span th:text="${list.getPages()}"></span>页/<span
+                                        th:text="${list.getTotal()}"></span>条记录，每页</span>
+                                <select class="form-control" id="max" >
+                                    <option  th:selected="${list.getSize()} eq 5">5</option>
+                                    <option
+                                            th:selected="${list.getSize()} eq 10">10
+                                    </option>
+                                    <option
+                                            th:selected="${list.getSize()} eq 20">20
+                                    </option>
+                                </select>
+                                <span class="input-group-addon">条</span>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-sm-offset-1" style="margin-left: 13%">
+                            <nav aria-label="Page navigation">
+                                <ul th:each="pp:${list.getPages()}" class="pagination pagination-sm"  style="list-style: none">
+                                    <li style="float: left" th:class="${list.hasPrevious()}?'':'disabled'"><a
+                                            href="#" data-page="1">首页</a></li>
+                                    <li style="float: left" th:class="${list.hasPrevious()}?'':'disabled'">
+                                        <a href="#" aria-label="Previous"
+                                           th:attr="data-page=${list.current}-1"> <span
+                                                aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <li th:each="nu:${#numbers.sequence(0,list.getPages())}"  style="float: left" th:class="${list.current}==pp?'active':''">
+                                        <a href="#" th:if="${nu}>0" id="current" th:attr="data-page=${nu}" th:text="${nu}"></a>
+                                    </li>
+                                    <li style="float: left" th:class="${list.hasNext()}?'':'disabled'"><a
+                                            href="#" aria-label="Next"
+                                            th:attr="data-page=${list.current}+1"> <span
+                                            aria-hidden="true">&raquo;</span>
+                                    </a>
+                                    </li>
+
+                                    <li style="float: left" th:class="${list.hasNext()}?'':'disabled'">
+                                        <a href="#" th:attr="data-page=${list.getPages()}">尾页</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="/assets/js/jquery-2.1.4.min.js" th:src="@{/assets/js/jquery-2.1.4.min.js}"></script>
+<!-- <![endif]-->
+<!--[if IE]>
+<script src="/assets/js/jquery-1.11.3.min.js" th:src="@{/assets/js/jquery-1.11.3.min.js}"></script>
+<![endif]-->
+<script type="/text/javascript">
+    if('ontouchstart' in document.documentElement) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+</script>
+<script src="/assets/js/bootstrap.min.js" th:src="@{/assets/js/bootstrap.min.js}"></script>
+<!-- page specific plugin scripts -->
+<!--[if lte IE 8]>
+<script src="/assets/js/excanvas.min.js" th:src="@{/assets/js/excanvas.min.js}"></script>
+<![endif]-->
+<script src="/assets/js/jquery-ui.custom.min.js" th:src="@{/assets/js/jquery-ui.custom.min.js}"></script>
+<script src="/assets/js/jquery.ui.touch-punch.min.js" th:src="@{/assets/js/jquery.ui.touch-punch.min.js}"></script>
+<script src="/assets/js/jquery.easypiechart.min.js" th:src="@{/assets/js/jquery.easypiechart.min.js}"></script>
+<script src="/assets/js/jquery.sparkline.index.min.js" th:src="@{/assets/js/jquery.sparkline.index.min.js}"></script>
+<script src="/assets/js/jquery.flot.min.js" th:src="@{/assets/js/jquery.flot.min.js}"></script>
+<script src="/assets/js/jquery.flot.pie.min.js" th:src="@{/assets/js/jquery.flot.pie.min.js}"></script>
+<script src="/assets/js/jquery.flot.resize.min.js" th:src="@{/assets/js/jquery.flot.resize.min.js}"></script>
+
+<!-- ace scripts -->
+<script src="/assets/js/ace-elements.min.js" th:src="@{/assets/js/ace-elements.min.js}"></script>
+<script src="/assets/js/ace.min.js" th:src="@{/assets/js/ace.min.js}"></script>
+
+<!-- inline scripts related to this page -->
+<script type="text/javascript">
+    jQuery(function ($) {
+        $('.easy-pie-chart.percentage').each(function () {
+            var $box = $(this).closest('.infobox');
+            var barColor = $(this).data('color') || (!$box.hasClass('infobox-dark') ? $box.css('color') : 'rgba(255,255,255,0.95)');
+            var trackColor = barColor == 'rgba(255,255,255,0.95)' ? 'rgba(255,255,255,0.25)' : '#E2E2E2';
+            var size = parseInt($(this).data('size')) || 50;
+            $(this).easyPieChart({
+                barColor: barColor,
+                trackColor: trackColor,
+                scaleColor: false,
+                lineCap: 'butt',
+                lineWidth: parseInt(size / 10),
+                animate: ace.vars['old_ie'] ? false : 1000,
+                size: size
+            });
+        })
+
+        //原始名称值
+        var oldName="";
+        /* 全选/全不选/反选  */
+        function inverseSelect() {
+            $("#main-type-id").prop("checked", $(".type-id:checked").length == $(".type-id").length);
+        }
+
+        //全选/全不选
+        $("#main-type-id").on("click", function () {
+            //1 当前元素选择状态
+            //2 所有的记录的checkbox 的选择状态和当前的主选择状态一致
+            $(".type-id").prop("checked", $(this).prop("checked"));
+        });
+
+
+        //搜索
+        $('.search').on('click',function(){
+            //用户名
+            var username=$(".username").val();
+            var name=$(".name").val();
+            //每页大小
+            var max=$("#max").val();
+            window.location.href="/leave/select/?username="+username+"&name="+name+"&pageSize="+max;
+        })
+        //改变当前记录数
+        $("#max").on("change",function(){
+            var max=$("#max").val();
+            window.location.href="/leave/list?pageSize="+max;
+        })
+        //跳转页
+        $("#jump").on("click",function(){
+            var pages=$("#pages").val();
+            var current=$("#current").text();
+            // alert(current)
+            if(!isNaN(pages)&&parseInt(pages)!=current&&parseInt(pages)<=current&&parseInt(pages)>=1){
+                var max=$("#max").val();
+                window.location.href="/leave/list?pageSize="+max+"&pageNo="+pages;
+            }else{
+                alert("请输入正确页码！");
+            }
+        })
+        //通过分页跳转
+        $(".pagination a").on("click",function(){
+            if(!$(this).parent().hasClass("disabled")){
+                var max=$("#max").val();
+                var pages=$(this).data("page");
+                console.log($(this));
+                window.location.href="/leave/list?pageSize="+max+"&pageNo="+pages;
+            }
+            return false;
+        })
+        //添加
+        $("table").on("click",".add",function(){
+            window.location.href="/leave/toAdd";
+        });
+        $("#adds").on("click",function () {
+            window.location.href="/leave/toAdd";
+        })
+        //修改
+        $("table").on("click",".update",function(){
+            var name=$(this).parents("tr").children().eq(2).text();
+            window.location.href="/leave/toUpdate/"+name;
+        });
+        //删除
+        $("table").on("click",".delete",function(){
+            //var role_id=$(this).data("roleId");
+            var role_id=$(this).parents("tr").children().eq(1).text();
+            var name=$(this).parents("tr").children().eq(2).text();
+            if(confirm("是否删除【"+name+"】的信息？")){
+                // alert(role_id);
+                $.ajax({
+                    url:"/leave/delete/"+role_id,
+                    success:function(){
+                        window.location.href="/leave/list";
+                    }
+                })
+            }
+        })
+
+        $('.sparkline').each(function () {
+            var $box = $(this).closest('.infobox');
+            var barColor = !$box.hasClass('infobox-dark') ? $box.css('color') : '#FFF';
+            $(this).sparkline('html',
+                {
+                    tagValuesAttribute: 'data-values',
+                    type: 'bar',
+                    barColor: barColor,
+                    chartRangeMin: $(this).data('min') || 0
+                });
+        });
+
+
+        //flot chart resize plugin, somehow manipulates default browser resize event to optimize it!
+        //but sometimes it brings up errors with normal resize event handlers
+        $.resize.throttleWindow = false;
+
+        var placeholder = $('#piechart-placeholder').css({'width': '90%', 'min-height': '150px'});
+        var data = [
+            {label: "social networks", data: 38.7, color: "#68BC31"},
+            {label: "search engines", data: 24.5, color: "#2091CF"},
+            {label: "ad campaigns", data: 8.2, color: "#AF4E96"},
+            {label: "direct traffic", data: 18.6, color: "#DA5430"},
+            {label: "other", data: 10, color: "#FEE074"}
+        ]
+
+        function drawPieChart(placeholder, data, position) {
+            $.plot(placeholder, data, {
+                series: {
+                    pie: {
+                        show: true,
+                        tilt: 0.8,
+                        highlight: {
+                            opacity: 0.25
+                        },
+                        stroke: {
+                            color: '#fff',
+                            width: 2
+                        },
+                        startAngle: 2
+                    }
+                },
+                legend: {
+                    show: true,
+                    position: position || "ne",
+                    labelBoxBorderColor: null,
+                    margin: [-30, 15]
+                }
+                ,
+                grid: {
+                    hoverable: true,
+                    clickable: true
+                }
+            })
+        }
+
+        drawPieChart(placeholder, data);
+
+        /**
+         we saved the drawing function and the data to redraw with different position later when switching to RTL mode dynamically
+         so that's not needed actually.
+         */
+        placeholder.data('chart', data);
+        placeholder.data('draw', drawPieChart);
+
+
+        //pie chart tooltip example
+        var $tooltip = $("<div class='tooltip top in'><div class='tooltip-inner'></div></div>").hide().appendTo('body');
+        var previousPoint = null;
+
+        placeholder.on('plothover', function (event, pos, item) {
+            if (item) {
+                if (previousPoint != item.seriesIndex) {
+                    previousPoint = item.seriesIndex;
+                    var tip = item.series['label'] + " : " + item.series['percent'] + '%';
+                    $tooltip.show().children(0).text(tip);
+                }
+                $tooltip.css({top: pos.pageY + 10, left: pos.pageX + 10});
+            } else {
+                $tooltip.hide();
+                previousPoint = null;
+            }
+
+        });
+
+        /////////////////////////////////////
+        $(document).one('ajaxloadstart.page', function (e) {
+            $tooltip.remove();
+        });
+
+
+        var d1 = [];
+        for (var i = 0; i < Math.PI * 2; i += 0.5) {
+            d1.push([i, Math.sin(i)]);
+        }
+
+        var d2 = [];
+        for (var i = 0; i < Math.PI * 2; i += 0.5) {
+            d2.push([i, Math.cos(i)]);
+        }
+
+        var d3 = [];
+        for (var i = 0; i < Math.PI * 2; i += 0.2) {
+            d3.push([i, Math.tan(i)]);
+        }
+
+
+        var sales_charts = $('#sales-charts').css({'width': '100%', 'height': '220px'});
+        $.plot("#sales-charts", [
+            {label: "Domains", data: d1},
+            {label: "Hosting", data: d2},
+            {label: "Services", data: d3}
+        ], {
+            hoverable: true,
+            shadowSize: 0,
+            series: {
+                lines: {show: true},
+                points: {show: true}
+            },
+            xaxis: {
+                tickLength: 0
+            },
+            yaxis: {
+                ticks: 10,
+                min: -2,
+                max: 2,
+                tickDecimals: 3
+            },
+            grid: {
+                backgroundColor: {colors: ["#fff", "#fff"]},
+                borderWidth: 1,
+                borderColor: '#555'
+            }
+        });
+
+        $('#recent-box [data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+
+        function tooltip_placement(context, source) {
+            var $source = $(source);
+            var $parent = $source.closest('.tab-content')
+            var off1 = $parent.offset();
+            var w1 = $parent.width();
+            var off2 = $source.offset();
+            //var w2 = $source.width();
+            if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2)) return 'right';
+            return 'left';
+        }
+
+        $('.dialogs,.comments').ace_scroll({
+            size: 300
+        });
+
+
+        //Android's default browser somehow is confused when tapping on label which will lead to dragging the task
+        //so disable dragging when clicking on label
+        var agent = navigator.userAgent.toLowerCase();
+        if (ace.vars['touch'] && ace.vars['android']) {
+            $('#tasks').on('touchstart', function (e) {
+                var li = $(e.target).closest('#tasks li');
+                if (li.length == 0) return;
+                var label = li.find('label.inline').get(0);
+                if (label == e.target || $.contains(label, e.target)) e.stopImmediatePropagation();
+            });
+        }
+
+        $('#tasks').sortable({
+                opacity: 0.8,
+                revert: true,
+                forceHelperSize: true,
+                placeholder: 'draggable-placeholder',
+                forcePlaceholderSize: true,
+                tolerance: 'pointer',
+                stop: function (event, ui) {
+                    //just for Chrome!!!! so that dropdowns on items don't appear below other items after being moved
+                    $(ui.item).css('z-index', 'auto');
+                }
+            }
+        );
+        $('#tasks').disableSelection();
+        $('#tasks input:checkbox').removeAttr('checked').on('click', function () {
+            if (this.checked) $(this).closest('li').addClass('selected');
+            else $(this).closest('li').removeClass('selected');
+        });
+        //show the dropdowns on top or bottom depending on window height and menu position
+        $('#task-tab .dropdown-hover').on('mouseenter', function (e) {
+            var offset = $(this).offset();
+
+            var $w = $(window)
+            if (offset.top > $w.scrollTop() + $w.innerHeight() - 100)
+                $(this).addClass('dropup');
+            else $(this).removeClass('dropup');
+        });
+
+    })
+</script>
+
+</body>
+</html>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ew.school_epidemic.mapper.HistoryMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.ew.school_epidemic.entity.History">
+        <id column="id" property="id" />
+        <result column="ds" property="ds" />
+        <result column="confirm" property="confirm" />
+        <result column="confirm_add" property="confirmAdd" />
+        <result column="suspect" property="suspect" />
+        <result column="suspect_add" property="suspectAdd" />
+        <result column="heal" property="heal" />
+        <result column="heal_add" property="healAdd" />
+        <result column="dead" property="dead" />
+        <result column="dead_add" property="deadAdd" />
+    </resultMap>
+
+    <select id="findHistory" parameterType="com.ew.school_epidemic.entity.History" resultType="com.ew.school_epidemic.entity.History">
+        select * from history where ds=#{ds};
+    </select>
+
+    <update id="updateHistory" parameterType="com.ew.school_epidemic.entity.History">
+        update history set confirm=#{confirm},confirm_add=#{confirm_add},
+        suspect_add=#{suspect_add},suspect=#{suspect},heal=#{heal},heal_add=#{heal_add},
+        dead=#{dead},dead_add=#{dead_add} where ds=#{ds};
+    </update>
+
+    <insert id="saveHistory" parameterType="com.ew.school_epidemic.entity.History">
+        insert into History(ds,confirm,confirm_add,suspect,suspect_add,heal,heal_add,dead,dead_add)
+        values(#{ds},#{confirm},#{confirm_add},#{suspect},#{suspect_add},#{heal},#{heal_add},#{dead},#{dead_add});
+    </insert>
+
+    <select id="findToday" resultType="com.ew.school_epidemic.entity.History">
+        SELECT * FROM history order by id DESC LIMIT 1;
+    </select>
+
+    <select id="findEachDayTotal" resultType="com.ew.school_epidemic.entity.History">
+        SELECT ds,confirm,suspect,heal,dead FROM history GROUP BY ds;
+    </select>
+
+    <select id="findEachDayAdd"  resultType="com.ew.school_epidemic.entity.History">
+        SELECT ds,confirm_add,suspect_add,heal_add,dead_add FROM history GROUP BY ds;
+    </select>
+</mapper>
